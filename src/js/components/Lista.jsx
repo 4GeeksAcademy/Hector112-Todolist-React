@@ -4,21 +4,21 @@ function Lista() {
 	// Estado de la lista de tareas
 	const [tasks, setTasks] = useState([]);
 	// Estado del input de texto
-	const [inputValue, setInputValue] = useState("");
+	const [list, setlist] = useState("");
 
 	// Enter para añadir tarea
-	const handleKeyDown = (enter) => {
+	const nuevaTarea = (enter) => {
 		if (enter.key === 'Enter') {
-			const text = inputValue.trim();
+			const text = list.trim();
 			if (text) {
 				setTasks(prev => [...prev, { id: Date.now(), text }]);
 			}
-			setInputValue("");
+			setlist("");
 		}
 	};
 
 	// Eliminar mi tarea por id
-	const handleDelete = (id) => {
+	const borrarTu = (id) => {
 		setTasks(prev => prev.filter(t => t.id !== id));
 	};
 
@@ -31,9 +31,9 @@ function Lista() {
 
 				{/* Input para añadir tareas */}
 				<input type="text" className="col-6 todo-input text-center" placeholder="Nueva tarea"
-					value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={handleKeyDown} />
+					value={list} onChange={(event) => setlist(event.target.value)} onKeyDown={nuevaTarea} />
 
-				{/* Si no hay tareas, muestra un mensaje y si hay tareas las muestra*/}
+				{/* Si no hay tareas, muestra un mensaje y si hay tareas, las muestra*/}
 				{tasks.length === 0 ? (<p className="text-center opacity-50 no-tasks-message"> Añadir tareas </p>) : (
 
 					// Caja de las tareas
@@ -50,8 +50,8 @@ function Lista() {
 									<span style={{ flexGrow: 1 }}>{task.text}</span>
 
 									{/* Botón x de eliminar tarea, se resalta al pasar el raton*/}
-									<button style={{ background: "none", border: "none", color: "red", fontSize: "20px", cursor: "pointer", opacity: 0.2 }}
-										onClick={() => handleDelete(task.id)}
+									<button style={{ background: "none", border: "none", color: "red", fontSize: "20px", cursor: "pointer", opacity: 0.2, alignItems: "center" }}
+										onClick={() => borrarTu(task.id)}
 										onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
 										onMouseLeave={(e) => e.currentTarget.style.opacity = "0.2"}>
 										&times;
