@@ -7,8 +7,8 @@ function Lista() {
 	const [inputValue, setInputValue] = useState("");
 
 	// Enter para añadir tarea
-	const handleKeyDown = (e) => {
-		if (e.key === 'Enter') {
+	const handleKeyDown = (enter) => {
+		if (enter.key === 'Enter') {
 			const text = inputValue.trim();
 			if (text) {
 				setTasks(prev => [...prev, { id: Date.now(), text }]);
@@ -17,41 +17,52 @@ function Lista() {
 		}
 	};
 
-	// Aquí elimino mi tarea por id
+	// Eliminar mi tarea por id
 	const handleDelete = (id) => {
 		setTasks(prev => prev.filter(t => t.id !== id));
 	};
 
 	return (
-		<div className="contenedorLista row justify-content-center">
-			<h1 className="text-center my-4 text-danger opacity-25">todos</h1>
-      
-      <div className="col-9 text-center pb-5">
-        <input type="text" className="col-9 todo-input text-center" placeholder="Nueva tarea"
-			  	value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={handleKeyDown}/>
-      </div>
+		// Contenedor principal
+		<div className="contenedorTodo row justify-content-center ">
+			{/* Contenedor de la lista, nueva tarea y todos */}
+			<div className="contenedorLista col-6 text-center p-5 mt-5 mb-5 shadow-lg rounded-3 bg-white">
+				<h1 className="text-center my-4 text-danger opacity-25">todos</h1>
 
-			  {tasks.length === 0 ? (
-			  	<p className="text-center opacity-50 no-tasks-message"> Añadir tareas </p>) : (
-          <div className= "col-6" >  
-            <ul className= "list-unlysted ">
-              {tasks.map(task => (
-                <li 
-                  key={task.id}
-                  style={{display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 12px",
-                          borderRadius: "4px"}}>
-                  <span style={{ flexGrow: 1 }}>{task.text}</span>
-                  <button style={{background: "none", border: "none", color: "red", fontSize: "20px", cursor: "pointer", opacity: 0.2}}
-                    onClick={() => handleDelete(task.id)} 
-                    onMouseEnter={(e) => e.currentTarget.style.opacity = "1"} onMouseLeave={(e) => e.currentTarget.style.opacity = "0.2"}>
-                    &times;
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>  
-        
-			)}
+				{/* Input para añadir tareas */}
+				<input type="text" className="col-6 todo-input text-center" placeholder="Nueva tarea"
+					value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={handleKeyDown} />
+
+				{/* Si no hay tareas, muestra un mensaje y si hay tareas las muestra*/}
+				{tasks.length === 0 ? (<p className="text-center opacity-50 no-tasks-message"> Añadir tareas </p>) : (
+
+					// Caja de las tareas
+					<div className="listaTareas" >
+
+						{/* Hace que se muestren las tareas en forma de lista */}
+						<ul className="list-unlysted ">
+
+							{/* Añade una la linea para cada tarea */}
+							{tasks.map(task => (
+
+								// Hace que las tareas seam un li con un botón de eliminar
+								<li key={task.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 12px", borderRadius: "4px" }}>
+									<span style={{ flexGrow: 1 }}>{task.text}</span>
+
+									{/* Botón x de eliminar tarea, se resalta al pasar el raton*/}
+									<button style={{ background: "none", border: "none", color: "red", fontSize: "20px", cursor: "pointer", opacity: 0.2 }}
+										onClick={() => handleDelete(task.id)}
+										onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
+										onMouseLeave={(e) => e.currentTarget.style.opacity = "0.2"}>
+										&times;
+									</button>
+
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 }
